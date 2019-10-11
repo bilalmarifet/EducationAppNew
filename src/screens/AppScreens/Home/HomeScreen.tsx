@@ -75,14 +75,54 @@ export default class App extends Component<HomeScreenProps,{}> {
 
   }
 
-  // _renderScrollViewContent() {
-  //   return (
+  _renderScrollViewContent() {
+    return (
+<View>
 
 
-  //   );
+      <FlatList  
+          // contentContainerStyle={{margin:10}}
+          numColumns={1}
+            // style={{flexGrow:0}}
+          data={[{key : '1'},
+          {key:'2'},
+          {key:'3'},
+          {key:'4'}
+
+        ]}
+          keyExtractor={item => item.key}
+          renderItem={({ item }) => 
+                <View 
+                 style={{alignItems:'center',margin:15,padding:10,paddingVertical:25,
+                 shadowColor: '#969696',backgroundColor: 'white',
+                 shadowOffset: {width: 3, height: 3 },
+                 shadowOpacity: .5,
+                 borderRadius: 5}}>
+                   <Text style={{fontFamily:'Roboto-Regular',fontSize:20,fontWeight:'700'}}>Data Dosyası Oluşturma</Text>
+                   <Text style={{fontFamily:'Roboto-Regular',marginTop:10,textAlign:'center'}}>SPSS'te data dosyası oluşturulurken dikkat edilecek hususlar, Temel değişken tipleri, Değişkenlerin kodlanması</Text>
+
+                   <View style={{flexDirection:'row',marginTop:30}}>
+                   <Button buttonStyle={{backgroundColor:'#db5c6b'}}title="Sepete Ekle" containerStyle={{marginRight:"50%"}} titleStyle={{fontFamily:'Roboto-Regular',fontSize:15,marginLeft:7}} icon={<Icon name="basket"  color="white"/>} />
+                  <TouchableOpacity >
+                  <Icon name="eye" color='#db5c6b' style={{marginTop:4}}  size={25}  />
+                  
+                  </TouchableOpacity>
+                     </View>
+                           </View>
 
 
-  // }
+          }
+
+        />
+
+
+        <Button buttonStyle={{backgroundColor:'#db5c6b'}}title="Sepete Ekle" containerStyle={{width:'70%',alignSelf:'center',marginBottom:10}} titleStyle={{fontFamily:'Roboto-Regular',fontSize:15,marginLeft:7}} icon={<Icon name="basket"  color="white"/>} />
+
+        </View>
+    );
+
+
+  }
 
   static navigationOptions = (
     screenProps: NavigationScreenProps
@@ -202,47 +242,10 @@ export default class App extends Component<HomeScreenProps,{}> {
           
         
 
-          <View >
+          <View style={{marginTop:-10}} >
 
       
-        <FlatList  
-          // contentContainerStyle={{margin:10}}
-          numColumns={1}
-            // style={{flexGrow:0}}
-          data={[{key : '1'},
-          {key:'2'},
-          {key:'3'},
-          {key:'4'}
-
-        ]}
-          keyExtractor={item => item.key}
-          renderItem={({ item }) => 
-                <View 
-                 style={{alignItems:'center',margin:15,padding:10,paddingVertical:25,
-                 shadowColor: '#969696',backgroundColor: 'white',
-                 shadowOffset: {width: 3, height: 3 },
-                 shadowOpacity: .5,
-                 borderRadius: 5}}>
-                   <Text style={{fontFamily:'Roboto-Regular',fontSize:20,fontWeight:'700'}}>Data Dosyası Oluşturma</Text>
-                   <Text style={{fontFamily:'Roboto-Regular',marginTop:10,textAlign:'center'}}>SPSS'te data dosyası oluşturulurken dikkat edilecek hususlar, Temel değişken tipleri, Değişkenlerin kodlanması</Text>
-
-                   <View style={{flexDirection:'row',marginTop:30}}>
-                   <Button buttonStyle={{backgroundColor:'#db5c6b'}}title="Sepete Ekle" containerStyle={{marginRight:"50%"}} titleStyle={{fontFamily:'Roboto-Regular',fontSize:15,marginLeft:7}} icon={<Icon name="basket"  color="white"/>} />
-                  <TouchableOpacity >
-                  <Icon name="eye" color='#db5c6b' style={{marginTop:4}}  size={25}  />
-                  
-                  </TouchableOpacity>
-                     </View>
-                           </View>
-
-
-          }
-
-        />
-
-
-        <Button buttonStyle={{backgroundColor:'#db5c6b'}}title="Sepete Ekle" containerStyle={{width:'70%',alignSelf:'center',marginBottom:10}} titleStyle={{fontFamily:'Roboto-Regular',fontSize:15,marginLeft:7}} icon={<Icon name="basket"  color="white"/>} />
-
+        {this._renderScrollViewContent()}
       </View>
         </Animated.ScrollView>
         <Animated.View

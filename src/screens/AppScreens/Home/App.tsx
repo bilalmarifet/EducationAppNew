@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
-  RefreshControl,ViewProps,Dimensions
+  RefreshControl,ViewProps,
 } from 'react-native';
 
 import {
