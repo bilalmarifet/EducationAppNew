@@ -1,14 +1,7 @@
 import { LOGIN_STARTED,LOGIN_FAILED,LOGIN_SUCCEED,RESET_PROPS } from "../actions/types";
-export interface Action {
-  type: string;
-  payload: any;
-}
-export interface UserState {
-  isLoading : boolean;
-  isFinished: boolean;
-  isSucceed : boolean;
 
-}
+import { Action } from "../../models/action";
+import { UserState } from "../../models/state";
 
 const intialState = {
     isLoading : false,

@@ -1,11 +1,6 @@
 import {CONTROL_EMAIL_STARTED,CONTROL_EMAIL_FAILED,CONTROL_EMAIL_SUCCEED,SAVE_PASSWORD_FAILED,SAVE_PASSWORD_STARTED,SAVE_PASSWORD_SUCCEED} from '../actions/types'
 import { RESET_PROPS } from '../actions/types';
-
-export interface Action {
-  type: string;
-  payload: any;
-}
-
+import { Action } from '../../models/action';
 
 export interface UserState {
   laodingCheck : boolean;

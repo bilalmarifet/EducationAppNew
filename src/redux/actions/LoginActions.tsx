@@ -4,24 +4,7 @@ import {EDU_API_LOGIN } from '../../constants'
 import { Dispatch } from "react";
 import {LOGIN_FAILED,LOGIN_STARTED,LOGIN_SUCCEED ,RESET_PROPS} from './types'
 import { navigate } from '../services/Navigator';
-import {Action} from '../reducers/LoginReducers'
-
-
-// export function controlemail(email: string) {
-// return new Promise((resolve,reject) => {
-//   //control email if its exist 
-
-// });
-// }
-
-
-
-// export function resetProps() {
-//   return(dispatch : Dispatch<Action>) => {
-//     dispatch(reset());
-//   }
-// }
-
+import { Action } from "../../models/action";
 
 export function loginUserService(email: string, password: string) {
 
@@ -48,12 +31,12 @@ export function loginUserService(email: string, password: string) {
       dispatch(loginIsSucceed(true)); 
       console.log("succeed");
       dispatch(reset());
-      navigate('mainBottomTab')
+
       
     })
     .catch(error => { 
       
-      console.log(error + 'error kaydetme asn storage')   
+      console.log(error + 'errorr kaydetme asn storage')   
       // dispatch(loading(false));
       dispatch(loginIsSucceed(false));
       dispatch(reset());

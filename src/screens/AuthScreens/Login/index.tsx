@@ -87,6 +87,12 @@ class Login extends Component<Props, {}> {
  
 
   render() {
+    if(this.props.isLoading){
+      console.log("yükleniyor");
+    }
+    if(this.props.isSucceed){
+      this.props.navigation.navigate("mainBottomTab");
+    }
     return (
       <View style={styles.container}>
         {/* <LinearGradient style={{flex:1}} colors={['#ff4259', '#db5c6b', '#ffb5be']} > */}
@@ -225,7 +231,6 @@ function bindToAction(dispatch : any) {
   };
 
 }
-
 
 
 export default connect(mapStateToProps,bindToAction)(Login);

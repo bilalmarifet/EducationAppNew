@@ -33,12 +33,8 @@ export class Button extends Component<Props, {}>{
     if(loading)
     {
       return(
-
-        <TouchableOpacity  {...this.props} style={[styles.buttonStyle,this.props.style]}>
-  
-         
+        <TouchableOpacity  {...this.props} style={[styles.buttonStyle,this.props.style]}>       
         <ActivityIndicator/>
-  
       </TouchableOpacity>
       );
     }

@@ -6,29 +6,34 @@ import {
   StyleSheet,
 
   View,
-  RefreshControl,ViewProps,FlatList,TouchableOpacity,Image,Dimensions
+  RefreshControl, ViewProps, FlatList, TouchableOpacity, Image, Dimensions, ActivityIndicator, WebView
 } from 'react-native';
 import { Text, Button } from "react-native-elements";
-
-
+import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
-
 import {
   SafeAreaView
 } from 'react-navigation'
-import { Input, FloatingLabelInput,LessonSection } from "../../../components";
+import { Input, FloatingLabelInput, LessonSection } from "../../../components";
 import stylesNew from "../../AuthScreens/Login/styles";
 import DeviceInfo from 'react-native-device-info';
-import {NavigationScreenProps,NavigationScreenProp,NavigationScreenComponent,NavigationStackScreenOptions} from 'react-navigation'
+import { NavigationScreenProps, NavigationScreenProp, NavigationScreenComponent, NavigationStackScreenOptions } from 'react-navigation'
 import { Header } from 'react-native-elements';
+import { CourseHomeListData } from '../../../redux/actions/course/homeAction';
+import { ICourseItem } from '../../../models/course/coruseItem';
+import { AppState } from '../../../redux/store'
+import HTML from 'react-native-render-html';
 
 interface NavStateParams {
   someValue: string
 }
+ interface Props {
+  navigationScreen: NavigationScreenComponent<{}>;
+  navigation: NavigationScreenProp<any, any>;
+  courses: ICourseItem[];
+  CourseHomeListData : () => void;
+  loading: boolean;
 
-export interface HomeScreenProps {
-  navigationScreen:  NavigationScreenComponent<{}>
-  navigation :  NavigationScreenProp<any,any>
 };
 
 
@@ -40,7 +45,7 @@ const HEADER_MAX_HEIGHT = 300;
 const HEADER_MIN_HEIGHT = Platform.OS === 'ios' ? 60 : 73;
 // const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT ;
 
-var HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT ;
+var HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 var hasNotchTmp = false
 
 DeviceInfo.hasNotch().then(hasNotch => {
@@ -48,18 +53,11 @@ DeviceInfo.hasNotch().then(hasNotch => {
   if (hasNotch) {
     hasNotchTmp = hasNotch
 
-    HEADER_SCROLL_DISTANCE -=30
+    HEADER_SCROLL_DISTANCE -= 30
   }
-  
-  
-  
-  
-  
-    })
-
-export default class App extends Component<HomeScreenProps,{}> {
-
-  constructor(props : any) {
+})
+class App extends Component<Props, {}> {
+  constructor(props: any) {
     super(props);
 
     this.state = {
@@ -68,69 +66,52 @@ export default class App extends Component<HomeScreenProps,{}> {
         Platform.OS === 'ios' ? -HEADER_MAX_HEIGHT : 0,
       ),
       refreshing: false,
-      position : 0
+      position: 0
     };
-
-
-
   }
-
-  // _renderScrollViewContent() {
-  //   return (
-
-
-  //   );
-
-
-  // }
 
   static navigationOptions = (
     screenProps: NavigationScreenProps
   ) => {
-    return { 
+    return {
 
-      headerStyle : {
-          // height : screenProps.navigation.getParam('headerHeight'),
-          // backgroundColor:'#d67676'
+      headerStyle: {
+        // height : screenProps.navigation.getParam('headerHeight'),
+        // backgroundColor:'#d67676'
       },
-        header: null 
+      header: null
     }
-  }  
+  }
 
-  componentDidMount(){
+  componentDidMount() {
 
   }
 
- componentWillMount() {
-
- 
-
-
- 
-  
-  
+  componentWillMount() {
+    this.props.CourseHomeListData();
   }
 
-  
-
-
-  _increaseCount = (pos : number) => {
-    this.setState({position : pos })
+  _increaseCount = (pos: number) => {
+    this.setState({ position: pos })
 
   };
-
+_GetCourses(){
+  if(this.props.loading){
+    return (<ActivityIndicator></ActivityIndicator>)
+  };
+}
 
   render() {
     // Because of content inset the scroll value will be negative on iOS so bring
     // it back to 0.
-
+      console.log("courselist", this.props.courses);
     const scrollY = Animated.add(
       this.state.scrollY,
       Platform.OS === 'ios' ? HEADER_MAX_HEIGHT : 0,
     );
     const headerTranslate = scrollY.interpolate({
       inputRange: [0, HEADER_SCROLL_DISTANCE],
-      outputRange: [0, -HEADER_SCROLL_DISTANCE ],
+      outputRange: [0, -HEADER_SCROLL_DISTANCE],
       extrapolate: 'clamp',
     });
 
@@ -157,20 +138,20 @@ export default class App extends Component<HomeScreenProps,{}> {
     });
     const titleTranslate = scrollY.interpolate({
       inputRange: [0, HEADER_SCROLL_DISTANCE / 2, HEADER_SCROLL_DISTANCE],
-      outputRange: [hasNotchTmp ? 0 : 0, 0, hasNotchTmp ?  20 :  5],
+      outputRange: [hasNotchTmp ? 0 : 0, 0, hasNotchTmp ? 20 : 5],
       extrapolate: 'clamp',
     });
 
-    
+
 
     return (
-      <SafeAreaView  style={
+      <SafeAreaView style={
         styles.fill}>
 
         {/* <View style={{backgroundColor: '#772ea2'}}>
         {/* <MyStatusBar backgroundColor="black" barStyle="light-content" /> */}
 
-  <StatusBar barStyle="light-content" backgroundColor="green" />
+        <StatusBar barStyle="light-content" backgroundColor="green" />
 
 
         <Animated.ScrollView
@@ -180,17 +161,7 @@ export default class App extends Component<HomeScreenProps,{}> {
             [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }],
             { useNativeDriver: true },
           )}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={() => {
-                this.setState({ refreshing: true });
-                setTimeout(() => this.setState({ refreshing: false }), 1000);
-              }}
-              // Android offset for RefreshControl
-              progressViewOffset={HEADER_MAX_HEIGHT}
-            />
-          }
+
           // iOS offset for RefreshControl
           contentInset={{
             top: HEADER_MAX_HEIGHT,
@@ -199,51 +170,56 @@ export default class App extends Component<HomeScreenProps,{}> {
             y: -HEADER_MAX_HEIGHT,
           }}
         >
-          
-        
+
+
 
           <View >
 
-      
-        <FlatList  
-          // contentContainerStyle={{margin:10}}
-          numColumns={1}
-            // style={{flexGrow:0}}
-          data={[{key : '1'},
-          {key:'2'},
-          {key:'3'},
-          {key:'4'}
+            {this._GetCourses()}
+            <FlatList
+              // contentContainerStyle={{margin:10}}
+              numColumns={1}
+              style={{ marginTop: 300 }}
+              // style={{flexGrow:0}}
+              data={this.props.courses}
+              keyExtractor={item => item.id.toString()}
+              renderItem={({ item }) =>
+                <View
+                  style={{
+                    alignItems: 'center', margin: 15, padding: 10, paddingTop: 10, paddingVertical: 25,
+                    elevation: 5,
+                    shadowColor: '#969696', backgroundColor: 'white',
+                    shadowOffset: { width: 3, height: 3 },
+                    shadowOpacity: .5,
+                    borderRadius: 5
+                  }}>
+                  <Text style={{ fontFamily: 'Roboto-Regular', fontSize: 20, fontWeight: '700', paddingBottom: 10 }}>{item.name}</Text>
+                  <View style={{ width: '100%', height: 1, backgroundColor: '#d67676' }}></View>
+                  <HTML html={item.content} style={{ fontFamily: 'Roboto-Regular', marginTop: 10, textAlign: 'center', paddingBottom: 10, fontSize: 16 }}></HTML>
 
-        ]}
-          keyExtractor={item => item.key}
-          renderItem={({ item }) => 
-                <View 
-                 style={{alignItems:'center',margin:15,padding:10,paddingVertical:25,
-                 shadowColor: '#969696',backgroundColor: 'white',
-                 shadowOffset: {width: 3, height: 3 },
-                 shadowOpacity: .5,
-                 borderRadius: 5}}>
-                   <Text style={{fontFamily:'Roboto-Regular',fontSize:20,fontWeight:'700'}}>Data Dosyası Oluşturma</Text>
-                   <Text style={{fontFamily:'Roboto-Regular',marginTop:10,textAlign:'center'}}>SPSS'te data dosyası oluşturulurken dikkat edilecek hususlar, Temel değişken tipleri, Değişkenlerin kodlanması</Text>
+                  <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                    <Button buttonStyle={{ backgroundColor: '#db5c6b' }} title="Sepete Ekle"  containerStyle={{ flex:0.5 }} titleStyle={{ fontFamily: 'Roboto-Regular', fontSize: 15, marginLeft: 7 }} icon={<Icon name="basket" color="white" />} />
+                    <View style={{flex:0.5, flexDirection:'row', justifyContent:'flex-end'}}>
+                    <Text style={{fontSize:25, fontWeight:'700', flex:0.6}}>{item.displayPrice} TL</Text>
+                    <TouchableOpacity style={{alignContent:'flex-end', justifyContent:'flex-end'}} onPress={()=>this.props.navigation.navigate("CourseDetail",{
+              courseItem:item 
+            })} >
+                      <Icon name="eye" color='#db5c6b' style={{ marginTop: 4, flex:0.2 }} size={25} />
 
-                   <View style={{flexDirection:'row',marginTop:30}}>
-                   <Button buttonStyle={{backgroundColor:'#db5c6b'}}title="Sepete Ekle" containerStyle={{marginRight:"50%"}} titleStyle={{fontFamily:'Roboto-Regular',fontSize:15,marginLeft:7}} icon={<Icon name="basket"  color="white"/>} />
-                  <TouchableOpacity >
-                  <Icon name="eye" color='#db5c6b' style={{marginTop:4}}  size={25}  />
-                  
-                  </TouchableOpacity>
-                     </View>
-                           </View>
+                    </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
 
 
-          }
+              }
 
-        />
+            />
 
+            <Text style={{textAlign:'center', fontSize:20, fontFamily:'Roboto-Regular'}}>veya Tüm Kursu 375 TL'ye</Text>
+            <Button buttonStyle={{ backgroundColor: '#db5c6b' }} title="Sepete Ekle" containerStyle={{ width: '70%', alignSelf: 'center', marginBottom: 10 }} titleStyle={{ fontFamily: 'Roboto-Regular', fontSize: 15, marginLeft: 7 }} icon={<Icon name="basket" color="white" />} />
 
-        <Button buttonStyle={{backgroundColor:'#db5c6b'}}title="Sepete Ekle" containerStyle={{width:'70%',alignSelf:'center',marginBottom:10}} titleStyle={{fontFamily:'Roboto-Regular',fontSize:15,marginLeft:7}} icon={<Icon name="basket"  color="white"/>} />
-
-      </View>
+          </View>
         </Animated.ScrollView>
         <Animated.View
           pointerEvents="none"
@@ -260,7 +236,7 @@ export default class App extends Component<HomeScreenProps,{}> {
                 transform: [{ translateY: imageTranslate }],
               },
             ]}
-            source={{uri : 'https://www.ikonegitim.com/Upload/Icerik/a94e4b85-4371-4744-91eb-b636dd7bf6e1.png'}}
+            source={{ uri: 'https://www.ikonegitim.com/Upload/Icerik/a94e4b85-4371-4744-91eb-b636dd7bf6e1.png' }}
           />
         </Animated.View>
         <Animated.View
@@ -275,10 +251,10 @@ export default class App extends Component<HomeScreenProps,{}> {
           ]}
         >
           <Header backgroundColor="#d67676"
-  leftComponent={{ icon: 'menu', color: '#fff' }}
-  centerComponent={{ text: 'MY TITLE', style: { color: '#fff' } }}
-  rightComponent={{ icon: 'home', color: '#fff' }}
-/>
+            leftComponent={{ icon: 'menu', color: '#fff' }}
+            centerComponent={{ text: 'SPPSS EĞİTİMİ', style: { color: '#fff' } }}
+            rightComponent={{ icon: 'home', color: '#fff' }}
+          />
           {/* <Text style={styles.title}>Title</Text> */}
         </Animated.View>
       </SafeAreaView>
@@ -301,7 +277,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#d67676',
     overflow: 'hidden',
     height: HEADER_MAX_HEIGHT,
-    borderWidth:0,
+    borderWidth: 0,
 
   },
   backgroundImage: {
@@ -315,7 +291,7 @@ const styles = StyleSheet.create({
   },
   bar: {
     backgroundColor: 'transparent',
-    marginTop: Platform.OS === 'ios' ? 28: 38,
+    marginTop: Platform.OS === 'ios' ? 28 : 38,
     height: 32,
     alignItems: 'center',
     justifyContent: 'center',
@@ -326,7 +302,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'white',
-    fontSize: 25  ,
+    fontSize: 25,
   },
   scrollViewContent: {
     // iOS uses content inset, which acts like padding.
@@ -341,13 +317,23 @@ const styles = StyleSheet.create({
   },
   statusBar: {
 
-    backgroundColor : 'red'
+    backgroundColor: 'red'
   },
 });
 
 
+const mapStateToProps = (state: AppState) => ({
+  courses: state.home.courses,
+  loading: state.home.loading
+})
+
+function bindToAction(dispatch: any) {
+  return {
+    CourseHomeListData: () =>
+      dispatch(CourseHomeListData())
+
+  };
+}
 
 
-
-
-
+export default connect(mapStateToProps, bindToAction)(App);

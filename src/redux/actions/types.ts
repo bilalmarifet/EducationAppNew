@@ -10,5 +10,10 @@ export const LOGIN_STARTED = "loginStarted";
 export const LOGIN_SUCCEED = "loginSucceed";
 export const LOGIN_FAILED = "loginFailed";
 
+
+
+export const HOME_LOADING = "home_Loading";
+export const HOME_GET_COURSE ="homeGetVideos";
+
 export const RESET_PROPS = "resetProps";
 

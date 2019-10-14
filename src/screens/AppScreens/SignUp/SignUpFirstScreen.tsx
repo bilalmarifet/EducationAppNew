@@ -16,7 +16,6 @@ import {Input,Text} from 'react-native-elements'
 import styles from "../../AuthScreens/Login/styles";
 import { connect } from "react-redux";
 import { AppState } from '../../../redux/store'
-import { Action } from "../../../redux/reducers/SignUpReducers";
 import FlashMessage,{ showMessage, hideMessage, } from "react-native-flash-message";
 
 interface Props {
@@ -68,7 +67,7 @@ class SignUpFirstScreen extends Component<Props, {}> {
 
 
   render() {
-
+    
 
     return (
       <View style={[styles.container, {justifyContent:'flex-start',marginTop:50 }] }>
@@ -92,7 +91,7 @@ class SignUpFirstScreen extends Component<Props, {}> {
                         Build Something Amazing
                       </Text>
                     </View> */}
-                    <Text h3  style={{fontFamily:'OpenSans-Regular', alignSelf: 'center', marginTop: 30}}> Emailini Yaz</Text>
+                    <Text h3  style={{fontFamily:'OpenSans-Regular', alignSelf: 'center', marginTop: 30}}> Email Adresiniz</Text>
                     <Text style={{ fontFamily:'OpenSans-Regular',alignSelf: 'center', marginTop: 5}}> Hesabini olusturmak icin mailini yaz.</Text>
                     <View style={[styles.inputContainer,{padding:10,marginTop:20}]}>
                         
@@ -142,8 +141,7 @@ const mapStateToProps = (state : AppState) => ({
 function bindToAction(dispatch : any) {
   return {
     controlemail : (email : string) =>
-    dispatch(controlemail(email))
-    
+    dispatch(controlemail(email)) 
   };
 }
 

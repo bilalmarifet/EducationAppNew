@@ -18,19 +18,20 @@ import Login from "../screens/AuthScreens/Login";
 import AuthLoading from "../screens/AuthLoading";
 import SignUpFirstScreen from '../screens/AppScreens/SignUp/SignUpFirstScreen'
 import SignUpSecondScreen from '../screens/AppScreens/SignUp/SignUpSecondScreen'
-import App from '../screens/AppScreens/Home/App'
+import CourseDetail from '../screens/AppScreens/Home/CourseDetail'
 import UserInfoScreen from "../screens/AppScreens/User/UserInfoScreen";
 import HomeScreen from '../screens/AppScreens/Home/HomeScreen'
 import VideoScreen from '../screens/AppScreens/Home/VideoScreen'
 import SignUpSecondPhoneVerificationScreen from '../screens/AppScreens/SignUp/SignUpPhoneVerificationScreen'
 const MainStack = createStackNavigator(
   {
-    Home: { screen: Home },
-    App : { screen :App },
+    Login: { screen: Login },
+    Home: { screen: HomeScreen },
+    CourseDetail : { screen :CourseDetail },
     UserInfo : {screen: UserInfoScreen}
   },
   {
-    initialRouteName: "UserInfo",
+    initialRouteName: "Home",
     // headerMode: "none",
 
   }
@@ -41,7 +42,7 @@ const MainStack = createStackNavigator(
 
 const EducationVideoStack = createStackNavigator({
   Home : HomeScreen,
-  App : { screen :App },
+  CourseDetail: { screen :CourseDetail },
 
   Video: VideoScreen
 
@@ -51,16 +52,16 @@ const EducationVideoStack = createStackNavigator({
 
 
 
-EducationVideoStack.navigationOptions = ({ navigation }) => {
+EducationVideoStack.navigationOptions = ( navigation:any ) => {
 
   let tabBarVisible = true;
 
-  let routeName = navigation.state.routes[navigation.state.index].routeName
+  /*let routeName = navigation.state.routes[navigation.state.index].routeName
 
   if ( routeName == 'Video' ) {
       tabBarVisible = false
   }
-
+*/
   return {
       tabBarVisible,
   }
@@ -72,11 +73,14 @@ EducationVideoStack.navigationOptions = ({ navigation }) => {
 
 
 const mainBottomTab = createBottomTabNavigator({
-  UserInfo : {screen: UserInfoScreen},
-  edcuation : EducationVideoStack
-})
-
-
+  Education : EducationVideoStack,
+  UserInfo : {screen: UserInfoScreen}
+},
+{
+  initialRouteName: "Education",
+  // headerMode: "none"
+}
+);
 
 const AuthStack = createStackNavigator(
   {
@@ -87,7 +91,7 @@ const AuthStack = createStackNavigator(
     SignUpSecondPhoneVerification : SignUpSecondPhoneVerificationScreen
   },
   {
-    initialRouteName: "SignUpSecondPhoneVerification",
+    initialRouteName: "Login",
     headerMode: "none"
   }
 );
