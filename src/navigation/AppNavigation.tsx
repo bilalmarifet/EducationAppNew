@@ -87,7 +87,7 @@ const AuthStack = createStackNavigator(
     SignUpSecondPhoneVerification : SignUpSecondPhoneVerificationScreen
   },
   {
-    initialRouteName: "SignUpSecondPhoneVerification",
+    initialRouteName: "Login",
     headerMode: "none"
   }
 );
@@ -131,7 +131,7 @@ export default createAppContainer(
       
     },
     {
-      initialRouteName: "AuthLoading",
+      initialRouteName: "AuthStack",
 
     }
   )

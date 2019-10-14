@@ -12,7 +12,7 @@ import {reset} from '../actions/LoginActions'
 
 export function controlemail(email: string) {
   console.log("asdasd" + email)
-  return (dispatch : Dispatch) =>  {
+  return (dispatch : Dispatch<Action>) =>  {
    
     dispatch(controlemailStarted());
 

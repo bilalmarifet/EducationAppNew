@@ -116,7 +116,7 @@ export default class App extends Component<HomeScreenProps,{}> {
         />
 
 
-        <Button buttonStyle={{backgroundColor:'#db5c6b'}}title="Sepete Ekle" containerStyle={{width:'70%',alignSelf:'center',marginBottom:10}} titleStyle={{fontFamily:'Roboto-Regular',fontSize:15,marginLeft:7}} icon={<Icon name="basket"  color="white"/>} />
+        <Button buttonStyle={{backgroundColor:'#db5c6b'}}title="Hepsini Sepete Ekle" containerStyle={{width:'70%',alignSelf:'center',marginBottom:10}} titleStyle={{fontFamily:'Roboto-Regular',fontSize:15,marginLeft:7}} icon={<Icon name="basket"  color="white"/>} />
 
         </View>
     );
@@ -131,7 +131,7 @@ export default class App extends Component<HomeScreenProps,{}> {
 
       headerStyle : {
           // height : screenProps.navigation.getParam('headerHeight'),
-          // backgroundColor:'#d67676'
+          // backgroundColor:'#d67676's
       },
         header: null 
     }
@@ -278,9 +278,9 @@ export default class App extends Component<HomeScreenProps,{}> {
           ]}
         >
           <Header backgroundColor="#d67676"
-  leftComponent={{ icon: 'menu', color: '#fff' }}
-  centerComponent={{ text: 'MY TITLE', style: { color: '#fff' } }}
-  rightComponent={{ icon: 'home', color: '#fff' }}
+
+  centerComponent={{ text: 'SPSS ile Biyoistatistik Eğitimi', style: { color: '#fff' } }}
+
 />
           {/* <Text style={styles.title}>Title</Text> */}
         </Animated.View>
